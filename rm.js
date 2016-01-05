@@ -22,15 +22,13 @@ function rm(rootPath)
      try 
      {
         let lspromises = []
-
-        if(fs.statSync(rootPath).isFile())
-        {
+        fs.stat(rootPath).then(function (data){
+        if(data.isFile()){
            console.log("removing file"+rootPath)
             fs.unlink(rootPath).then(console.log("removing file"+rootPath))
         }
-     
-        fs.readdir(rootPath).then(function(fileNames)
-        {
+        else{
+         fs.readdir(rootPath).then(function(fileNames){
              for (let fileName of fileNames) 
              {
                 let filePath = path.join(rootPath, fileName)
@@ -39,9 +37,7 @@ function rm(rootPath)
           
             }
               fs.rmdir(rootPath).then(console.log("removing directory "+rootPath))
-                 
-        })
-        
+        })}})
     } catch (e) {
         console.log(e.stack)
     }
