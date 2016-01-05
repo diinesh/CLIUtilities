@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env babel-node
 
 "use strict";
 
@@ -20,38 +20,45 @@ if (process.argv.length == 4)
     var param = process.argv[3]
     if (param == '-R')
     {
-        recursive = false
+        recursive = true
     }
 }
 
 
-function ls(rootPath, recursive)
+async function ls(rootPath, recursive)
 {
      try 
      {
         let lspromises = []
 
-        if(fs.statSync(rootPath).isFile())
+        let stats = await (fs.statSync(rootPath))
+        if(stats.isFile())
         {
-            console.log(rootPath)
-            return [rootPath]
+            process.stdout.write(rootPath + '\n')
+            return
         }
      
-        fs.readdir(rootPath).then(function(fileNames)
+        
+       let fileNames = await  fs.readdir(rootPath)
         {
              for (let fileName of fileNames) 
              {
                 let filePath = path.join(rootPath, fileName)
-                let promise = ls(filePath, recursive)
-                lspromises.push(promise)
+                let fileStats = await fs.statSync(filePath)
+                if(recursive)
+                {
+                    ls(filePath, recursive)
+                }
+                else if(fileStats.isFile())
+                {
+                    ls(filePath, recursive)
+                }
             }
-        })
+        }
         
-        return   _.flatten(Promise.all(lspromises))
     } catch (e) {
         console.log(e.stack)
     }
 }
 
 ls(rootPath, recursive)
-
