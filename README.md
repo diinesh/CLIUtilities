@@ -1,4 +1,9 @@
 # CLIUtilities
+A CLI Utilities Boilerplate
+
+This is a CLI Utilities library for Node.js submitted as [Assignment 1](http://courses.codepath.com/courses/nodejs_fast_track/unit/1#!assignment) for CodePath.
+
+
 TIME SPENT: 5 hours
 * [X] Required: `echo.js` prints the first argument to stdout
 * [X] Required: `cat.js` prints the contents of the first argument to stdout
