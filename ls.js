@@ -31,7 +31,7 @@ async function ls(rootPath, recursive)
      {
         let lspromises = []
 
-        let stats = await (fs.statSync(rootPath))
+        let stats = await (fs.stat(rootPath))
         if(stats.isFile())
         {
             process.stdout.write(rootPath + '\n')
@@ -44,7 +44,7 @@ async function ls(rootPath, recursive)
              for (let fileName of fileNames) 
              {
                 let filePath = path.join(rootPath, fileName)
-                let fileStats = await fs.statSync(filePath)
+                let fileStats = await fs.stat(filePath)
                 if(recursive)
                 {
                     ls(filePath, recursive)
